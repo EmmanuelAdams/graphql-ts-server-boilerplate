@@ -16,15 +16,20 @@
     "typescript": "4.6.3"
   },
   "dependencies": {
+    "@graphql-tools/merge": "^8.2.6",
+    "@graphql-tools/schema": "^8.3.6",
     "@paulxuca/graphql-yoga": "^1.1.4",
+    "apollo-server": "^3.6.7",
     "bcryptjs": "^2.4.3",
     "graphql": "^16.3.0",
     "graphql-import": "^1.0.2",
     "graphql-request": "^4.2.0",
+    "graphql-tools": "^8.2.4",
+    "graphql-yoga": "^2.0.0",
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "0.3.4",
+    "typeorm": "0.3.5",
     "uuid": "^8.3.2"
   },
   "scripts": {

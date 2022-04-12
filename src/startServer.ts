@@ -1,20 +1,41 @@
 import { importSchema } from 'graphql-import';
-import { resolvers } from './resolvers';
-import { GraphQLServer } from '@paulxuca/graphql-yoga';
 import * as path from 'path';
+import * as fs from 'fs';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { GraphQLSchema } from 'graphql';
+
 import { createTypeormConn } from './utils/createTypeormConn';
+import { mergeSchemas } from '@graphql-tools/schema';
+import { ApolloServer } from 'apollo-server';
 
 export const startServer = async () => {
-  const typeDefs = importSchema(
-    path.join(__dirname, './schema.graphql')
+  const schemas: GraphQLSchema[] = [];
+  const folders = fs.readdirSync(
+    path.join(__dirname, './modules')
   );
-
-  const server = new GraphQLServer({ typeDefs, resolvers });
-  await createTypeormConn();
-  const app = await server.start({
-    port: process.env.NODE_ENV === 'test' ? 0 : 4000,
+  folders.forEach((folder) => {
+    const {
+      resolvers,
+    } = require(`./modules/${folder}/resolvers`);
+    const typeDefs = importSchema(
+      path.join(
+        __dirname,
+        `./modules/${folder}/schema.graphql`
+      )
+    );
+    schemas.push(
+      makeExecutableSchema({ resolvers, typeDefs })
+    );
   });
-  console.log('Server is running on localhost:4000');
+
+  const server = new ApolloServer({
+    schema: mergeSchemas({ schemas }),
+  });
+  await createTypeormConn();
+  const port = 4000 || process.env.PORT;
+  const app = await server.listen(port, () =>
+    console.log(`🛡  Server listening on port: ${port} 🛡`)
+  );
 
   return app;
 };
