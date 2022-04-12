@@ -32,8 +32,8 @@ export const startServer = async () => {
     schema: mergeSchemas({ schemas }),
   });
   await createTypeormConn();
-  const port = 4000 || process.env.PORT;
-  const app = await server.listen(port, () =>
+  const port = process.env.PORT || 4000;
+  const app = server.listen(port, () =>
     console.log(`🛡  Server listening on port: ${port} 🛡`)
   );
 

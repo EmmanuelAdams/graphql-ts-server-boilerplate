@@ -7,9 +7,10 @@ let getHost = () => '';
 
 beforeAll(async () => {
   const app = await startServer();
-  const { port } = app.server();
+  const { port } = app.server.address();
   getHost = () => `http://127.0.0.1:${port}`;
 });
+
 const email = 'test@hotmail.com';
 const password = '12345';
 
