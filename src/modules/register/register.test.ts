@@ -7,17 +7,19 @@ import {
   invalidEmail,
   passwordNotLongEnough,
 } from './errorMessages';
+import { AddressInfo } from 'net';
 
 let getHost = () => '';
 
 beforeAll(async () => {
   const app = await startServer();
-  const port = app.address();
+  const { port } = app.address() as AddressInfo;
+  console.log('port =>', port);
   getHost = () => `http://127.0.0.1:${port}`;
 });
 
-const email = 'tom@bob.com';
-const password = 'jalksdf';
+const email = 'emmann@bob.com';
+const password = 'jalksddf';
 
 const mutation = (e: string, p: string) => `
 mutation {

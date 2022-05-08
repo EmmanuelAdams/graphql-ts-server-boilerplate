@@ -1,14 +1,18 @@
 import { importSchema } from 'graphql-import';
 import * as path from 'path';
 import * as fs from 'fs';
-import { makeExecutableSchema } from '@graphql-tools/schema';
-import { GraphQLSchema } from 'graphql';
 import * as Redis from 'ioredis';
-
 import { createTypeormConn } from './utils/createTypeormConn';
-import { mergeSchemas } from '@graphql-tools/schema';
+
 import { User } from './entity/User';
-import { GraphQLServer } from '@paulxuca/graphql-yoga';
+
+import {
+  mergeSchemas,
+  makeExecutableSchema,
+} from '@graphql-tools/schema';
+
+import { GraphQLServer } from 'graphql-yoga';
+import { GraphQLSchema } from 'graphql';
 
 export const startServer = async () => {
   const schemas: GraphQLSchema[] = [];
@@ -55,10 +59,10 @@ export const startServer = async () => {
   });
 
   await createTypeormConn();
-  const app = server.start({
-    port: process.env.NODE_ENV === 'test' ? 0 : 4000,
-  });
-  console.log(`🛡  Server listening on port: 4000 🛡`);
+  const port = process.env.PORT || 4000;
+  const app = server.start(() =>
+    console.log(`🛡  Server listening on port: ${port} 🛡`)
+  );
 
   return app;
 };
