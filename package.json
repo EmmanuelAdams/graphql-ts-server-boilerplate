@@ -47,6 +47,7 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "jest": {
+    "globalSetup": "./src/testSetup/callSetup.js",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
