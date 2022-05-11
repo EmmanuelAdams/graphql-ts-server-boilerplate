@@ -8,8 +8,8 @@ import {
   passwordNotLongEnough,
 } from './errorMessages';
 
-const email = 'emmasnn@bab.com';
-const password = 'jaalksddf';
+const email = 'emmyy@boby.com';
+const password = '1234566';
 
 const mutation = (e: string, p: string) => `
 mutation {
