@@ -63,11 +63,12 @@ export const resolvers: ResolverMap = {
       });
 
       await user.save();
-
-      await sendEmail(
-        email,
-        await createConfirmEmailLink(url, user.id, redis)
-      );
+      if (process.env.NODE_ENV !== 'test') {
+        await sendEmail(
+          email,
+          await createConfirmEmailLink(url, user.id, redis)
+        );
+      }
 
       return null;
     },
