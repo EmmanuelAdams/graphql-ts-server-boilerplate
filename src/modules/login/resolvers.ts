@@ -21,7 +21,10 @@ export const resolvers: ResolverMap = {
   Mutation: {
     login: async (
       _,
-      { email, password }: GQL.ILoginOnMutationArguments) => {const user = await User.findOne({where: { email },});
+      { email, password }: GQL.ILoginOnMutationArguments,
+      { session }
+    ) => {
+      const user = await User.findOne({ where: { email } });
       if (!user) {
         return errorResponse;
       }
@@ -29,7 +32,7 @@ export const resolvers: ResolverMap = {
       if (!user.confirmed) {
         return [
           {
-            path: "email",
+            path: 'email',
             message: confirmEmailError,
           },
         ];
@@ -43,6 +46,9 @@ export const resolvers: ResolverMap = {
       if (!valid) {
         return errorResponse;
       }
+
+      // login sucessful
+      session.userId = user.id;
 
       return null;
     },
