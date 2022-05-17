@@ -27,7 +27,7 @@
     "password": "emmanuel2001",
     "database": "grapqhl-ts-server-boilerplate-test",
     "synchronize": true,
-    "logging": true,
+    "logging": false,
     "dropSchema": true,
     "entities": ["src/entity/**/*.ts"],
     "migrations": ["src/migration/**/*.ts"],
