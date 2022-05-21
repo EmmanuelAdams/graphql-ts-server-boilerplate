@@ -52,7 +52,7 @@
   },
   "scripts": {
     "start": "SET NODE_ENV=development & nodemon --exec ts-node --files src/index.ts",
-    "test": "SET NODE_ENV=test & jest --watch",
+    "test": "SET NODE_ENV=test & jest --watch --runInBand",
     "gen-schema-types": "ts-node --files src/scripts/createTypes.ts",
     "typeorm": "typeorm-ts-node-commonjs"
   },

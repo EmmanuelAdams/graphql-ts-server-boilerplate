@@ -65,7 +65,6 @@ describe('me', () => {
       }
     );
 
-    console.log(response.data.data);
     expect(response.data.data).toEqual({
       me: {
         id: userId,
