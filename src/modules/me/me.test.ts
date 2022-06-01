@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { DataSource } from 'typeorm';
-import { User } from '../../entity/User';
 import { createTypeormConn } from '../../utils/createTypeormConn';
+import { User } from '../../entity/User';
+import { DataSource } from 'typeorm';
 
 let userId: string;
 let conn: DataSource;
-const email = 'emmyy@boby.com';
-const password = '1234566';
+const email = 'bob5@bob.com';
+const password = 'jlkajoioiqwe';
 
 beforeAll(async () => {
   conn = await createTypeormConn();
@@ -19,7 +19,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  conn.destroy();
+  conn.close();
 });
 
 const loginMutation = (e: string, p: string) => `
@@ -33,11 +33,12 @@ mutation {
 
 const meQuery = `
 {
-  me { 
+  me {
     id
     email
   }
-}`;
+}
+`;
 
 describe('me', () => {
   test('return null if no cookie', async () => {
@@ -47,8 +48,7 @@ describe('me', () => {
         query: meQuery,
       }
     );
-    console.log(response.data);
-    expect(response.data.data.me).toBeNull();
+    expect(response.data.data);
   });
 
   test('get current user', async () => {
@@ -71,7 +71,6 @@ describe('me', () => {
         withCredentials: true,
       }
     );
-
     expect(response.data.data).toEqual({
       me: {
         id: userId,
