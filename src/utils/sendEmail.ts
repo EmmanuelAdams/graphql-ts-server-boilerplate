@@ -1,8 +1,6 @@
 const SparkPost = require('sparkpost');
 
-const client = new SparkPost(
-  'c27b1aa031b8a11d8e6c9c05b78e243f6b32'
-);
+const client = new SparkPost();
 
 export const sendEmail = async (
   recipient: string,

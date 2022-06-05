@@ -1,6 +1,7 @@
 import { Redis } from 'ioredis';
 
 export interface Session {
+  destroy: any;
   userId?: string;
 }
 
