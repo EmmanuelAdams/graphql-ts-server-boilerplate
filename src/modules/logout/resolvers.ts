@@ -2,7 +2,6 @@ import {
   redisSessionPrefix,
   userSessionIdPrefix,
 } from '../../constants';
-import { redis } from '../../redis';
 import { ResolverMap } from '../../types/graphql-utils';
 
 export const resolvers: ResolverMap = {
@@ -10,7 +9,7 @@ export const resolvers: ResolverMap = {
     dummy: () => 'dummy',
   },
   Mutation: {
-    logout: async (_, __, { session }) => {
+    logout: async (_, __, { session, redis }) => {
       const { userId } = session;
       if (userId) {
         const sessionIds = await redis.lrange(
@@ -23,7 +22,7 @@ export const resolvers: ResolverMap = {
         for (let i = 0; i < sessionIds.length; i += 1) {
           promises.push(
             redis.del(
-              `${redisSessionPrefix}${sessionIds[1]}`
+              `${redisSessionPrefix}${sessionIds[i]}`
             )
           );
         }
