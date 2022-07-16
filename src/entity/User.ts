@@ -15,13 +15,16 @@ export class User extends BaseEntity {
   @Column('varchar', { length: 255 })
   email: string;
 
-  @Column('text')
-  password: string;
+  @Column('text') password: string;
 
-  @Column('boolean', { default: false }) confirmed: boolean;
+  @Column('boolean', { default: false })
+  confirmed: boolean;
+
+  @Column('boolean', { default: false })
+  forgotPasswordLocked: boolean;
 
   @BeforeInsert()
-  async hashPassword() {
+  async hashPasswordBeforeInsert() {
     this.password = await bcrypt.hash(this.password, 10);
   }
 }

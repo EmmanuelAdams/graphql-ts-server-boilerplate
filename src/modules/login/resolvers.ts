@@ -5,6 +5,7 @@ import { User } from '../../entity/User';
 import {
   invalidLogin,
   confirmEmailError,
+  forgotPasswordLockedError,
 } from './errorMessages';
 import { userSessionIdPrefix } from '../../constants';
 
@@ -36,6 +37,15 @@ export const resolvers: ResolverMap = {
           {
             path: 'email',
             message: confirmEmailError,
+          },
+        ];
+      }
+
+      if (user.forgotPasswordLocked) {
+        return [
+          {
+            path: 'email',
+            message: forgotPasswordLockedError,
           },
         ];
       }

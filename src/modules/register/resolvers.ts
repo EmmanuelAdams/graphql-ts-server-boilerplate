@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+
 import { ResolverMap } from '../../types/graphql-utils';
 import { User } from '../../entity/User';
 import { formatYupError } from '../../utils/formatYupError';
@@ -6,10 +7,10 @@ import {
   duplicateEmail,
   emailNotLongEnough,
   invalidEmail,
-  passwordNotLongEnough,
 } from './errorMessages';
-// import { createConfirmEmailLink } from '../../utils/createConfirmEmailLink';
-// import { sendEmail } from '../../utils/sendEmail';
+import { registerPasswordValidation } from '../../yupSchemas';
+// import { createConfirmEmailLink } from "../../utils/createConfirmEmailLink";
+// import { sendEmail } from "../../utils/sendEmail";
 
 const schema = yup.object().shape({
   email: yup
@@ -17,10 +18,7 @@ const schema = yup.object().shape({
     .min(3, emailNotLongEnough)
     .max(255)
     .email(invalidEmail),
-  password: yup
-    .string()
-    .min(3, passwordNotLongEnough)
-    .max(255),
+  password: registerPasswordValidation,
 });
 
 export const resolvers: ResolverMap = {
@@ -35,15 +33,17 @@ export const resolvers: ResolverMap = {
     ) => {
       try {
         await schema.validate(args, { abortEarly: false });
-      } catch (error) {
-        return formatYupError(error);
+      } catch (err) {
+        return formatYupError(err);
       }
+
       const { email, password } = args;
 
       const userAlreadyExists = await User.findOne({
         where: { email },
         select: ['id'],
       });
+
       if (userAlreadyExists) {
         return [
           {
@@ -59,7 +59,8 @@ export const resolvers: ResolverMap = {
       });
 
       await user.save();
-      // if (process.env.NODE_ENV !== 'test') {
+
+      // if (process.env.NODE_ENV !== "test") {
       //   await sendEmail(
       //     email,
       //     await createConfirmEmailLink(url, user.id, redis)
