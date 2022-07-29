@@ -19,6 +19,10 @@ const SESSION_SECRET = 'sdjaldsiasdk';
 const RedisStore = connectRedis(session);
 
 export const startServer = async () => {
+  if (process.env.NODE_ENV === 'test') {
+    await redis.flushall();
+  }
+
   const server = new GraphQLServer({
     schema: genSchema(),
     context: ({ request }) => ({
